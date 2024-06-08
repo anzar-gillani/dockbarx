@@ -26,13 +26,15 @@ def get_app_homedir():
     global appdir
     if appdir is not None:
         return appdir
-    homedir = os.environ.get("XDG_DATA_HOME", os.environ.get("HOME", os.path.expanduser('~')))
-    appdir = os.path.join(homedir, '.local', 'share', "dockbarx")
+    home_dir = os.environ.get("HOME", os.path.expanduser('~'))
+    user_dir = os.environ.get("XDG_DATA_HOME", os.path.join(home_dir, '.local', 'share'))
+    appdir = os.path.join(user_dir, "dockbarx")
+
     """
     Migration Path
     From "$HOME/.dockbarx" to "${XDG_DATA_HOME:-$HOME/.local/share}/dockbarx"
     """
-    old_appdir = os.path.join(homedir, '.dockbarx')
+    old_appdir = os.path.join(home_dir, '.dockbarx')
     if os.path.exists(old_appdir) and os.path.isdir(old_appdir):
         try:
             os.rename(old_appdir, appdir)
@@ -53,8 +55,8 @@ def get_app_dirs():
 
 def get_data_dirs(user_first=True):
     data_dirs = []
-    home_dir = os.environ.get("XDG_DATA_HOME", os.environ.get("HOME", os.path.expanduser('~')))
-    user_dir = os.path.join(home_dir, ".local", "share")
+    home_dir = os.environ.get("HOME", os.path.expanduser('~'))
+    user_dir = os.environ.get("XDG_DATA_HOME", os.path.join(home_dir, '.local', 'share'))
     if user_first:
         data_dirs.append(user_dir)
     env = os.environ.get("XDG_DATA_DIRS")
