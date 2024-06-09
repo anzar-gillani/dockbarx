@@ -293,7 +293,7 @@ class DesktopEntry(xdg.DesktopEntry.DesktopEntry):
 
                 if file.startswith("file://"):
                     file = file[7:]
-                file = file.replace("%20","\ ")
+                file = file.replace("%20","\\ ")
                 file = unquote(file)
                 files.append(file)
 
